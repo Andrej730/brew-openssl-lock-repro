@@ -1,0 +1,33 @@
+name: brew install qt with installed openssl@3
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  install:
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [repro, workaround]
+    steps:
+      - name: brew update
+        run: brew update
+
+      - name: openssl state
+        run: |
+          brew list --versions
+
+      - name: brew config
+        run: brew config
+
+      - name: brew doctor
+        run: brew doctor || true
+
+      - if: matrix.variant == 'workaround'
+        name: brew unlink openssl@3
+        run: brew unlink openssl@3
+
+      - name: brew install qt
+        run: brew install qt
