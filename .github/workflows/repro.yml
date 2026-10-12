@@ -12,6 +12,11 @@ jobs:
       matrix:
         variant: [repro, workaround]
     steps:
+      - name: brew update
+        run: |
+          brew untap homebrew/core homebrew/cask
+          brew update
+
       - name: openssl state
         run: |
           brew list --versions
